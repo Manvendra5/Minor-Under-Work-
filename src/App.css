@@ -1,12 +1,9 @@
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
+@import url("https://fonts.googleapis.com/css?family=Monoton");
 
-.App-link {
-  color: #61dafb;
+.p6 {
+  font-family: "Rubik", sans-serif;
+  font-weight: bold;
 }
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -16,103 +13,187 @@
   }
 }
 .App {
-  background: url("./markus-spiske-hU9gx8YfVK4-unsplash (1).jpg");
   text-align: center;
   width: 100%;
-  height: auto;
   background-size: cover;
   background-attachment: fixed;
   position: relative;
   overflow: hidden;
 }
-.App-header {
-  width: 100%;
-  height: 100%;
-  padding: 50px;
-  color: #fff;
-  text-shadow: 1px 1px 1px #333;
-  background-image: linear-gradient(135deg, #9f05ff69 10%, #fd5e086b 100%);
-}
-h2 {
-  font-family: "Dancing Script", cursive;
-  font-size: 80px;
-  margin-bottom: 20px;
-  color: #fa9e3c;
-}
 
 p {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
   margin-bottom: 30px;
 }
 
 .Go {
-  border: none;
-  outline: none;
-  padding: 10px 20px;
-  border-radius: 50px;
-  color: #333;
-  background: #fff;
-  margin-bottom: 50px;
-  box-shadow: 0 3px 20px 0 #0000003b;
-}
-.Go {
-  cursor: pointer;
-}
-/* playback buttons */
-.btn {
-  position: relative;
-  padding: 1.4rem 4.2rem;
-  padding-right: 3.1rem;
-  font-size: 1.4rem;
-  color: var(--inv);
-  letter-spacing: 1.1rem;
+  text-align: center;
   text-transform: uppercase;
-  transition: all 600ms cubic-bezier(0.77, 0, 0.175, 1);
   cursor: pointer;
-  user-select: none;
+  font-size: 20px;
+  letter-spacing: 4px;
+  position: relative;
+  background-color: #16a085;
+  border: none;
+  color: #fff;
+  padding: 20px;
+  width: 200px;
+  text-align: center;
+  transition-duration: 0.4s;
+  overflow: hidden;
+  box-shadow: 0 5px 15px #193047;
+  border-radius: 4px;
 }
 
-.btn:before,
-.btn:after {
+.Go:hover {
+  background: #fff;
+  box-shadow: 0px 2px 10px 5px #1abc9c;
+  color: #000;
+}
+
+.Go:after {
   content: "";
+  background: #1abc9c;
+  display: block;
   position: absolute;
-  transition: inherit;
+  padding-top: 300%;
+  padding-left: 350%;
+  margin-left: -20px !important;
+  margin-top: -120%;
+  opacity: 0;
+  transition: all 0.8s;
+}
+
+.Go:active:after {
+  padding: 0;
+  margin: 0;
+  opacity: 1;
+  transition: 0s;
+}
+
+.Go:focus {
+  outline: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  font-family: "Monoton", Helvetica, sans-serif;
+  background: #ab3428;
+  letter-spacing: 5px;
+}
+
+h1 {
+  display: inline;
+  font-size: 15vw;
+  text-transform: uppercase;
+  color: #f49e4c;
+}
+@media (min-width: 700px) {
+  h1 {
+    font-size: 9vw;
+  }
+}
+@media (min-width: 1400px) {
+  h1 {
+    font-size: 150px;
+  }
+}
+
+@supports (-webkit-background-clip: text) {
+  h1 {
+    color: transparent;
+    background: linear-gradient(7deg, #f5ee9e 50%, #f49e4c 0);
+    -webkit-background-clip: text;
+  }
+}
+
+.container {
+  height: 100%;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+}
+
+a {
+  display: block;
+  margin: auto;
+  padding: 1rem 1.25rem;
+  font-family: sans-serif;
+  font-size: 1.5rem;
+  text-decoration: none;
+  color: white;
+  position: relative;
+  -webkit-transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+  z-index: 1;
+}
+a:after {
+  content: "";
+  display: block;
+  height: 2px;
+  position: absolute;
+  bottom: 0;
+  right: 1.25rem;
+  left: 1.25rem;
+  background-color: #ffffff;
+  -webkit-transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+  -webkit-transform-origin: bottom center;
+  transform-origin: bottom center;
   z-index: -1;
 }
-
-.btn:hover {
-  color: var(--def);
-  transition-delay: 0.6s;
+a:hover {
+  color: #2d2d2d;
 }
-
-.btn:hover:before {
-  transition-delay: 0s;
-}
-
-.btn:hover:after {
-  background: var(--inv);
-  transition-delay: 0.4s;
-}
-/* Previous Button */
-.from-right:before,
-.from-right:after {
-  top: 0;
-  width: 0;
+a:hover:after {
+  right: 0;
+  left: 0;
   height: 100%;
 }
+.from-group {
+  font-family: "Rubik", sans-serif;
+  opacity: 0.1;
+}
 
-.from-right:before {
+.flat-button {
+  position: relative;
+  width: 250px;
+  height: 60px;
+  background: #e74c3c;
+  margin: 0 auto;
+  margin-top: 40px;
+  overflow: hidden;
+  z-index: 1;
+  cursor: pointer;
+  transition: color 0.3s;
+  /* Typo */
+  line-height: 60px;
+  text-align: center;
+  color: #fff;
+}
+
+.flat-button:after {
+  position: absolute;
+  top: 90%;
   left: 0;
-  border: 1px solid var(--inv);
-  border-left: 0;
-  border-right: 0;
-}
-
-.from-right:after {
-  right: 0;
-}
-
-.from-right:hover:before,
-.from-right:hover:after {
   width: 100%;
+  height: 100%;
+  background: #f49e4c;
+  content: "";
+  z-index: -2;
+  transition: transform 0.3s;
+}
+
+.flat-button:hover::after {
+  transform: translateY(-80%);
+  transition: transform 0.3s;
 }

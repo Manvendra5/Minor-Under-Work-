@@ -11,12 +11,16 @@ class App extends Component {
       deviceId: "",
       loggedIn: false,
       error: "",
+      spotifyId: "",
+      albumArt: "",
       trackName: "Track Name",
       artistName: "Artist Name",
       albumName: "Album Name",
       playing: false,
       position: 0,
-      duration: 1
+      duration: 1,
+      tracks: [],
+      recommendedTracks: []
     };
     // this will later be set by setInterval
     this.playerCheckInterval = null;
@@ -46,12 +50,16 @@ class App extends Component {
         .map(artist => artist.name)
         .join(", ");
       const playing = !state.paused;
+      const albumArt = currentTrack.album.images[0].url;
+      const spotifyId = currentTrack.id;
       this.setState({
         position,
         duration,
         trackName,
         albumName,
         artistName,
+        albumArt,
+        spotifyId,
         playing
       });
     } else {
@@ -94,6 +102,8 @@ class App extends Component {
       // to swap music playback to *our* player!
       await this.setState({ deviceId: device_id });
       this.transferPlaybackHere();
+      this.transferPlaylist();
+      this.getRecommendations();
     });
   }
 
@@ -149,6 +159,42 @@ class App extends Component {
     });
   }
 
+  transferPlaylist() {
+    const { token } = this.state;
+    fetch("https://api.spotify.com/v1/me/playlists", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    })
+      .then(response => response.json())
+
+      .then(data =>
+        this.setState({
+          tracks: data.items
+        })
+      );
+  }
+
+  getRecommendations() {
+    const { token } = this.state;
+    fetch("https://api.spotify.com/v1/recommendations", {
+      method: "GET",
+      headers: {
+        authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        limit: 10
+      }
+    })
+      .then(response => response.json())
+
+      .then(data =>
+        this.setState({
+          recommendedTracks: data.tracks
+        })
+      );
+  }
   render() {
     const {
       token,
@@ -157,45 +203,63 @@ class App extends Component {
       artistName,
       albumName,
       error,
-      playing
+      albumArt,
+      spotifyId,
+      playing,
+      tracks,
+      recommendedTracks
     } = this.state;
 
     return (
       <div className="App">
-        <h2>Acoustics</h2>
-        <p className="p1">This is a DEMO.</p>
+        <h1>Acoustics</h1>
 
         {error && <p>Error: {error}</p>}
 
         {loggedIn ? (
           <div>
+            <p>
+              {albumArt == "" ? (
+                <p></p>
+              ) : (
+                <img src={albumArt} style={{ height: 200 }} />
+              )}
+            </p>
+
             <p>Artist: {artistName}</p>
             <p>Track: {trackName}</p>
             <p>Album: {albumName}</p>
-            <p>
-              <button onClick={() => this.onPrevClick()}>Previous</button>
-              <button onClick={() => this.onPlayClick()}>
-                {playing ? "Pause" : "Play"}
-              </button>
-              <button onClick={() => this.onNextClick()}>Next</button>
-            </p>
+            <button class="flat-button" onClick={() => this.onPrevClick()}>
+              Previous
+            </button>
+            <button class="flat-button" onClick={() => this.onPlayClick()}>
+              {playing ? "Pause" : "Play"}
+            </button>
+            <button class="flat-button" onClick={() => this.onNextClick()}>
+              Next
+            </button>
           </div>
         ) : (
           <div>
             <p className="p6">
-              Enter your Spotify access token. Get it from{" "}
-              <a href="https://beta.developer.spotify.com/documentation/web-playback-sdk/quick-start/#authenticating-with-spotify">
-                here
-              </a>
-              .
+              Enter your Spotify access token.{" "}
+              <div className="container">
+                <a
+                  href="https://beta.developer.spotify.com/documentation/web-playback-sdk/quick-start/#authenticating-with-spotify"
+                  target="_blank"
+                >
+                  Access Token
+                </a>
+              </div>
             </p>
-            <p>
+            <div className="form-group">
               <input
                 type="text"
                 value={token}
                 onChange={e => this.setState({ token: e.target.value })}
+                placeholder="Paste Token"
               />
-            </p>
+            </div>
             <p>
               <button className="Go" onClick={() => this.handleLogin()}>
                 Go
