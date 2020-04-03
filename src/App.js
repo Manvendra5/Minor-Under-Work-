@@ -20,7 +20,8 @@ class App extends Component {
       position: 0,
       duration: 1,
       tracks: [],
-      recommendedTracks: []
+      recommendedTracks: [],
+      current_track: ""
     };
     // this will later be set by setInterval
     this.playerCheckInterval = null;
@@ -52,6 +53,7 @@ class App extends Component {
       const playing = !state.paused;
       const albumArt = currentTrack.album.images[0].url;
       const spotifyId = currentTrack.id;
+      const current_track = currentTrack;
       this.setState({
         position,
         duration,
@@ -60,7 +62,8 @@ class App extends Component {
         artistName,
         albumArt,
         spotifyId,
-        playing
+        playing,
+        current_track
       });
     } else {
       // state was null, user might have swapped to another device
@@ -68,6 +71,7 @@ class App extends Component {
         error: "Looks like you might have swapped to another device?"
       });
     }
+    this.getRecommendations();
   }
 
   createEventHandlers() {
@@ -103,7 +107,6 @@ class App extends Component {
       await this.setState({ deviceId: device_id });
       this.transferPlaybackHere();
       this.transferPlaylist();
-      this.getRecommendations();
     });
   }
 
@@ -178,13 +181,15 @@ class App extends Component {
   }
 
   getRecommendations() {
-    const { token } = this.state;
+    const { token, current_track } = this.state;
+
     fetch("https://api.spotify.com/v1/recommendations", {
       method: "GET",
       headers: {
+        seed_tracks: current_track.id,
+        seed_artists: current_track.artists[0].uri.split(":")[2],
         authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        limit: 10
+        "Content-Type": "application/json"
       }
     })
       .then(response => response.json())
@@ -194,6 +199,7 @@ class App extends Component {
           recommendedTracks: data.tracks
         })
       );
+    console.log(this.state.recommendedTracks);
   }
   render() {
     const {
@@ -207,7 +213,8 @@ class App extends Component {
       spotifyId,
       playing,
       tracks,
-      recommendedTracks
+      recommendedTracks,
+      current_track
     } = this.state;
 
     return (
